@@ -1,0 +1,13 @@
+set(HEADERS
+    ${CMAKE_CURRENT_SOURCE_DIR}/BaseMesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/BodyMesh.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/TargetSkinMesh.h
+)
+
+set(SOURCES
+    ${CMAKE_CURRENT_SOURCE_DIR}/BaseMesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/BodyMesh.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/TargetSkinMesh.cpp
+)
+
+target_sources(${PROJECT_NAME} PRIVATE ${HEADERS} ${SOURCES})

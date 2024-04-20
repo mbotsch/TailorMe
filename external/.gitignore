@@ -1,0 +1,21 @@
+pyg
+libtorch
+libtorch-static
+pytorch_scatter
+pytorch_sparse
+
+# temporary
+torch
+torch_scatter
+torch_sparse
+torch-ex
+parallel_hashmap
+
+torch.zip
+torch_scatter.zip
+torch_sparse.zip
+
+# M2 Pro
+pytorch-install
+pytorch-build
+pytorch

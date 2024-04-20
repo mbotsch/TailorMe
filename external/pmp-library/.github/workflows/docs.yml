@@ -1,0 +1,63 @@
+name: docs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  docs:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -o Acquire::Retries=3 doxygen texlive-base libclang-12-dev libclang-cpp12
+
+      - name: Fetch doxygen
+        run: export DOXYGEN_URL="https://github.com/doxygen/doxygen/releases/download/Release_1_9_6/doxygen-1.9.6.linux.bin.tar.gz" && mkdir doxygen && wget -O - ${DOXYGEN_URL} | tar --strip-components=1 -xz -C doxygen && echo `pwd`/doxygen/bin >> $GITHUB_PATH
+
+      - name: Create emscripten build directory
+        run: cmake -E make_directory ${{runner.workspace}}/embuild
+
+      - name: Fetch emscripten
+        shell: bash
+        working-directory: ${{runner.workspace}}/embuild
+        run: git clone https://github.com/emscripten-core/emsdk.git && cd emsdk && ./emsdk install latest && ./emsdk activate latest
+
+      - name: Configure emscripten
+        shell: bash
+        working-directory: ${{runner.workspace}}/embuild
+        run: source ./emsdk/emsdk_env.sh && emcmake cmake $GITHUB_WORKSPACE
+
+      - name: Build emscripten
+        working-directory: ${{runner.workspace}}/embuild
+        shell: bash
+        run: cmake --build . --parallel
+
+      - name: Create build directory
+        run: cmake -E make_directory ${{runner.workspace}}/build
+
+      - name: Configure CMkae
+        shell: bash
+        working-directory: ${{runner.workspace}}/build
+        run: cmake -DPMP_BUILD_VIS=OFF $GITHUB_WORKSPACE
+
+      - name: Build docs
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: cmake --build . --target docs
+
+      - name: Copy emscripten demos
+        working-directory: ${{runner.workspace}}/build
+        shell: bash
+        run: mkdir docs/html/demos/ && cp ${{runner.workspace}}/embuild/*.html ${{runner.workspace}}/embuild/*.js ${{runner.workspace}}/embuild/*.data ${{runner.workspace}}/embuild/*.wasm docs/html/demos
+
+      - name: GH Pages Deployment
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{runner.workspace}}/build/docs/html
+          force_orphan: true
+          publish_branch: gh-pages
+          cname: www.pmp-library.org
