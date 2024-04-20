@@ -88,6 +88,7 @@ cmake --build build
 ./build/tailorme_viewer
 ```
 
-## Third Party
-- PMP Library is included from [pmp-library](https://www.pmp-library.org)
-- The tri-tri-intersection algorithm is borrowed from [libigl](https://libigl.github.io/).
+## Third Party Libraries
+- [libigl](https://libigl.github.io/) MPL 2.0, tri-tri-intersection algorithm
+- [PMP Library](https://www.pmp-library.org) MIT license.
+- [ShapeOP](https://www.shapeop.org/) MPL 2.0
