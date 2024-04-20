@@ -56,6 +56,7 @@ We have prepared some scripts for downloading and compiling pytorch and pytorch 
 ```bash
 cd external
 source get-libtorch-x86.sh
+cd ..
 ```
 
 #### MacOS
@@ -63,6 +64,7 @@ source get-libtorch-x86.sh
 ```bash
 cd external 
 source get-libtorch-osx-arm.sh
+cd ..
 ```
 
 ## Building the project
