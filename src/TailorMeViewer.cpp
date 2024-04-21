@@ -423,6 +423,7 @@ auto TailorMeViewer::process_imgui_fitting() -> void
             // target filename
             if (std::filesystem::exists(target_filename)) {
                 load_target(target_filename);
+                _show_target_mesh = true;
             } else {
                 std::cerr << "[Error] Target file " + std::string(target_filename) +" does not exist.\n";
             }
@@ -451,6 +452,7 @@ auto TailorMeViewer::process_imgui_fitting() -> void
         ImGui::SameLine();
         if (ImGui::Button("Fit target") && _model != nullptr) {
             fit_target();
+            _show_target_mesh = false;
         }
 
         ImGui::Spacing();
